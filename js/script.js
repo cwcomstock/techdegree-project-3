@@ -32,27 +32,20 @@ const mainConfInput = document.querySelector("input[name='all']")
 
 /***
  * Form Loaded Tasks
+ * 1) Call function to Setup T-Shirt Section of form
+ * 2) Call function to Create Activty Total Elements and Setup
+ * 3) Call function to Setup Payment Section of Form
+ * 4) Call function to Setup Form Validation
  * 1) Call fuction to Setup Job Role Section of form
- * 3) Call function to Setup T-Shirt Section of form
- * 4) Call function to Create Activty Total Elements and Setup
- * 5) Call function to Setup Payment Section of Form
- * 6) Call function to Setup Form Validation
  ***/
 window.onload = () => {
 
-    usernameInput.focus(); //<- broken TODO troubleshoot!!!
-    document.querySelector('input#other-title').className = 'is-hidden';
-
-    setupJobRoleSection();
     setupTShirtHtml();
     createActivityTotalElements();
     setupPaymentSection();
     setupFormValidation();
-    //usernameInput.focus(); //<- broken TODO troubleshoot!!!
-    // usernameInput.value = "Chuck";
-    console.log(usernameInput);
-    usernameInput.focus();
-};
+    setupJobRoleSection();
+}
 
 //#region - Job Role Section
 
@@ -66,7 +59,6 @@ window.onload = () => {
 const setupJobRoleSection = () => {
 
     usernameInput.focus();
-    // document.querySelector("input#name").focus();
     document.querySelector('input#other-title').className = 'is-hidden';
 }
 
