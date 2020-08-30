@@ -405,13 +405,10 @@ const validateAll = (event) => {
     // console.log('validateAll');
     allPassed = usernameHasValue();
     allPassed = isValidEmail();
-    // allPassed = emailHasValue();
-    // if (allPassed = emailHasValue()) {
-    //     allPassed = isValidEmail();
-    // }
-
 
     //TODO - check for Activities!!  ******************************
+
+    //TODO - move messages for credit card or is it OK to have them hidden until all is dealt with??!!
 
     // console.log(paymentSelect.options[paymentSelect.selectedIndex].value);
     if (paymentSelect.options[paymentSelect.selectedIndex].value === 'credit card') {
