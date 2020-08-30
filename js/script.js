@@ -24,10 +24,12 @@ const bitcoinDiv = document.querySelector('div#bitcoin');
 const form = document.querySelector('form');
 const usernameInput = document.querySelector("input#name");
 const emailInput = document.querySelector("input#mail");
+const invalidEmailText = "Please Enter a Valid Email Address";
+const blankEmailText = "Email Cannot Be Blank";
 const creditCardInput = document.querySelector("input#cc-num");
 const zipInput = document.querySelector("input#zip");
 const cvvInput = document.querySelector("input#cvv");
-const mainConfInput = document.querySelector("input[name='all']")
+const mainConfInput = document.querySelector("input[name='all']");
 
 
 /***
@@ -48,7 +50,6 @@ window.onload = () => {
 }
 
 //#region - Job Role Section
-
 
 /***
  * `setupJobRoleSection` function
@@ -327,26 +328,104 @@ const wrapParagraphAroundInputs = (input, message, labelWrapped = false) => {
         paragraph.appendChild(input);
         paragraph.appendChild(newSpan);
     }
-
 }
 
 const setupFormValidation = () => {
 
     wrapParagraphAroundInputs(usernameInput, "Name Cannot Be Blank");
     wrapParagraphAroundInputs(emailInput, "Please Enter a Valid Email Address");
-    wrapParagraphAroundInputs(creditCardInput, "Please Enter a Valid Credit Card Number");
-    wrapParagraphAroundInputs(zipInput, "Please Enter a 5 Digit Number");
-    wrapParagraphAroundInputs(cvvInput, "Please Enter a 3 Digit Number");
+    wrapParagraphAroundInputs(creditCardInput, "Please Enter a Valid Credit Card Number", true);
+    wrapParagraphAroundInputs(zipInput, "Please Enter a 5 Digit Zip Code", true);
+    wrapParagraphAroundInputs(cvvInput, "Please Enter a 3 Digit CVV", true);
     wrapParagraphAroundInputs(mainConfInput, "Please Select at least One Activity", true);
 }
 
-// const usernameInput = document.querySelector("input#name");
-// const emailInput = document.querySelector("input#mail");
-// const creditCardInput = document.querySelector("input#cc-num");
-// const zipInput = document.querySelector("input#zip");
-// const cvvInput = document.querySelector("input#cvv");
+const usernameHasValue = () => {
 
-// usernameInput.addEventListener("input", createListener(isValidUsername));
+    return !showOrHideTip(!usernameInput.value.trim().length > 0, usernameInput.nextElementSibling);
+}
+
+// const emailHasValue = () => {
+
+//     let passed = emailInput.value.trim().length > 0;
+
+//     if (!passed) {
+//         emailInput.nextElementSibling.textContent = blankEmailText;
+//     }
+//     return !showOrHideTip(!passed, emailInput.nextElementSibling);
+// }
+
+// regex from the Treehouse course Regular Expressions in JavaScript by Joel Kraft
+const isValidEmail = () => {
+
+    let passed = emailInput.value.trim().length > 0;
+    if (!passed) {
+        emailInput.nextElementSibling.textContent = blankEmailText;
+    } else {
+        passed = /^[^@]+@[^@.]+\.[a-z]+$/i.test(emailInput.value);
+        if (!passed) {
+            emailInput.nextElementSibling.textContent = invalidEmailText;
+        }
+    }
+
+    return !showOrHideTip(!passed, emailInput.nextElementSibling);
+    // return !showOrHideTip(!/^[^@]+@[^@.]+\.[a-z]+$/i.test(emailInput.value), emailInput.nextElementSibling);
+}
+
+
+// const isValidEmail = () => {
+//     // console.log(emailInput.value);
+//     // console.log(!/^[^@]+@[^@.]+\.[a-z]+$/i.test(emailInput.value));
+//     let passed = /^[^@]+@[^@.]+\.[a-z]+$/i.test(emailInput.value);
+//     if (!passed) {
+//         emailInput.nextElementSibling.textContent = invalidEmailText;
+//     }
+//     return !showOrHideTip(!passed, emailInput.nextElementSibling);
+//     // return !showOrHideTip(!/^[^@]+@[^@.]+\.[a-z]+$/i.test(emailInput.value), emailInput.nextElementSibling);
+// }
+
+const isValidCreditCardNumber = () => {
+
+    console.log(creditCardInput.value);
+    console.log(/\d{13,16}/.test(creditCardInput.value));
+    console.log('finished cc');
+    !showOrHideTip(!/^\d{13,16}$/.test(creditCardInput.value), creditCardInput.nextElementSibling);
+    !showOrHideTip(!/^\d{5}$/.test(zipInput.value), zipInput.nextElementSibling);
+    !showOrHideTip(!/^\d{3}$/.test(cvvInput.value), cvvInput.nextElementSibling);
+    return false;
+    // return !showOrHideTip(!/\d{13,16}/.test(creditCardInput.value), creditCardInput.nextElementSibling);
+}
+
+
+
+const validateAll = (event) => {
+    event.preventDefault();
+    let allPassed = false;
+    // console.log(event);
+    // console.log('validateAll');
+    allPassed = usernameHasValue();
+    allPassed = isValidEmail();
+    // allPassed = emailHasValue();
+    // if (allPassed = emailHasValue()) {
+    //     allPassed = isValidEmail();
+    // }
+
+
+    //TODO - check for Activities!!  ******************************
+
+    // console.log(paymentSelect.options[paymentSelect.selectedIndex].value);
+    if (paymentSelect.options[paymentSelect.selectedIndex].value === 'credit card') {
+        //do credit card testing here
+        console.log('ready for cc test');
+        allPassed = isValidCreditCardNumber();
+    }
+    console.log(allPassed);
+    //if all passed submit if not preventDefault();
+}
+
+// usernameInput.addEventListener("input", createRealTimeListener(isValidUsername));
+
+emailInput.addEventListener("input", isValidEmail);
 
 // emailInput.addEventListener("input", createListener(isValidPassword));
 
@@ -356,21 +435,17 @@ const setupFormValidation = () => {
 
 // cvvInput.addEventListener("input", createListener(isValidTelephone));
 
-function isValidUsername(username) {
-    // return /^[a-z]+$/.test(username);
-    console.log(username.length > 0)
-    return username.length > 0;
-}
-
-// original code from the Treehouse course Regular Expressions in JavaScript by Joel Kraft
-function showOrHideTip(show, element) {
+// original code (modified by me) from the Treehouse course Regular Expressions in JavaScript by Joel Kraft
+const showOrHideTip = (show, element) => {
     // show element when show is true, hide when false
     // console.log(show + " show");
     // paragraph = element.parentElement;
-    console.log(element);
+    // console.log('showOrHideTip');
+    // console.log(show);
+    // console.log(element);
 
     inputOfSpan = element.previousElementSibling;
-    console.log(inputOfSpan);
+    // console.log(inputOfSpan);
     // console.log(paragraph);
     // console.log(element.style.display);
     if (show) {
@@ -384,63 +459,117 @@ function showOrHideTip(show, element) {
         inputOfSpan.className = '';
         // paragraph.className = '';
     }
-    console.log(element.previousElementSibling);
+
+    return show;
+    // console.log(element.previousElementSibling);
+    // console.log(element);
+    // console.log(element.style.display);
+}
+
+function showOrHideTipOriginal(show, element) {
+    // show element when show is true, hide when false
+    // console.log(show + " show");
+    // paragraph = element.parentElement;
+    // console.log('showOrHideTip');
+    // console.log(show);
+    // console.log(element);
+
+    inputOfSpan = element.previousElementSibling;
+    // console.log(inputOfSpan);
+    // console.log(paragraph);
+    // console.log(element.style.display);
+    if (show) {
+        // console.log(element);
+        element.style.display = "inherit";
+        inputOfSpan.className = 'error';
+        // paragraph.className = 'error';
+        // console.log(element);
+    } else {
+        element.style.display = "none";
+        inputOfSpan.className = '';
+        // paragraph.className = '';
+    }
+    // console.log(element.previousElementSibling);
     // console.log(element);
     // console.log(element.style.display);
 }
 
 // original code from the Treehouse course Regular Expressions in JavaScript by Joel Kraft
-function createListener(validator) {
-    return e => {
-        const text = e.target.value;
-        const valid = validator(text);
-        const showTip = text !== "" && !valid;
-        const tooltip = e.target.nextElementSibling;
-        showOrHideTip(showTip, tooltip);
-    };
-}
+// function createRealTimeListener(validator) {
+//     return e => {
+//         console.log('createListener RealTime');
+//         const text = e.target.value;
+//         const valid = validator();
+//         const showTip = !valid;
+//         console.log(showTip + " showTip 2")
+//         const tooltip = e.target.nextElementSibling;
+//         showOrHideTip(showTip, tooltip);
+//     };
+// }
+
+// function createSubmitListener(validator) {
+//     return e => {
+
+//         console.log('createListener Submit');
+//         // const text = e.target.value; <- text is in the validator function
+//         // const valid = validator(text);
+//         const valid = validator();
+//         // const showTip = text !== "" && !valid;
+//         const showTip = !valid;
+//         console.log(showTip + " showTip 1")
+//         // const tooltip = e.target.nextElementSib?ling;
+//         const tooltip = e.target.nextElementSibling;
+//         showOrHideTip(showTip, tooltip);
+//     };
+//     e.preventDefault();
+// }
+
+
 
 // **************  Will be somethign like form.addEventListener("submit", createListener(validateAllFunction)); *******************
 
+form.addEventListener("submit", validateAll);
+// form.addEventListener("submit", createSubmitListener(validateAll));
+
 // ************* TEST ************************************************
-form.addEventListener('submit', function (event) {
-    // if the email field is valid, we let the form submit
-    event.preventDefault(); //NOT SURE if this should be called first??
-    console.log('submit!');
+// form.addEventListener('submit', function (event) {
+//     // if the email field is valid, we let the form submit
+//     event.preventDefault(); //NOT SURE if this should be called first??
+//     console.log('submit!');
 
-    //get each check working and then create one function and call it to check each one, one by one,
-    // will use createListener above to make this work:  form.addEventListener("submit", createListener(validateAllFunction));
+//get each check working and then create one function and call it to check each one, one by one,
+// will use createListener above to make this work:  form.addEventListener("submit", createListener(validateAllFunction));
 
-    //********I will have some input real-time handlers above
-    // 1) emailInput.addEventListener("input", createListener(isValidPassword));
+//********I will have some input real-time handlers above
+// 1) emailInput.addEventListener("input", createListener(isValidPassword));
 
-    //if credit card is chosen:
-    // 2) creditCardInput.addEventListener("input", createListener(isValidTelephone));
+//if credit card is chosen:
+// 2) creditCardInput.addEventListener("input", createListener(isValidTelephone));
 
-    // 3) zipInput.addEventListener("input", createListener(isValidPassword));
+// 3) zipInput.addEventListener("input", createListener(isValidPassword));
 
-    // 4) cvvInput.addEventListener("input", createListener(isValidTelephone));
+// 4) cvvInput.addEventListener("input", createListener(isValidTelephone));
 
-    // *************and some submit only
-    //1) Name field can't be blank.
-    //2) Register for Activities checkboxes (at least one must be selected)
-
-
+// *************and some submit only
+//1) Name field can't be blank.
+//2) Register for Activities checkboxes (at least one must be selected)
 
 
 
-    // if (!isValidUsername(event.target.value)) {
-    //     // If it isn't, we display an appropriate error message
-    //     // showError();
-    //     console.log("invalid!");
-    //     // Then we prevent the form from being sent by canceling the event
-    //     event.preventDefault();
-    // } else {
-    //     console.log("worked!");
 
-    // }
 
-});
+// if (!isValidUsername(event.target.value)) {
+//     // If it isn't, we display an appropriate error message
+//     // showError();
+//     console.log("invalid!");
+//     // Then we prevent the form from being sent by canceling the event
+//     event.preventDefault();
+// } else {
+//     console.log("worked!");
+
+// }
+
+// });
 //#endregion - Form Validation
 
 // delete after finished testing.
