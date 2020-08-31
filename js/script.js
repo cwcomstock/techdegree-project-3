@@ -302,7 +302,6 @@ paymentSelect.addEventListener('change', e => {
 
 //#endregion - Payment Info
 
-
 //#region - Form Validation
 
 /***
@@ -317,7 +316,7 @@ paymentSelect.addEventListener('change', e => {
  * 4) insert new paragraph before the label or div element reference in step 3
  * 5) append label or div to the paragraph (wraps it)
  * 6) if there isn't a previous wrapped element (paragraph or div)
- *      a) wrap the new paragraph around the input's supporing elements
+ *      a) wrap the new paragraph around the input's supporting elements
  * @param {element} input - input to add span to and wrap paragraph around
  * @param {text} message - messsage to display
  * @param {boolean} labelWrapped - true don't wrap paragraph around other elements
