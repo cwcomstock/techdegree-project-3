@@ -334,9 +334,11 @@ const setupFormValidation = () => {
 
     wrapParagraphAroundInputs(usernameInput, "Name Cannot Be Blank");
     wrapParagraphAroundInputs(emailInput, "Please Enter a Valid Email Address");
-    wrapParagraphAroundInputs(creditCardInput, "Please Enter a Valid Credit Card Number", true);
-    wrapParagraphAroundInputs(zipInput, "Please Enter a 5 Digit Zip Code", true);
+
     wrapParagraphAroundInputs(cvvInput, "Please Enter a 3 Digit CVV", true);
+    wrapParagraphAroundInputs(zipInput, "Please Enter a 5 Digit Zip Code", true);
+    wrapParagraphAroundInputs(creditCardInput, "Please Enter a Valid Credit Card Number", true);
+
     wrapParagraphAroundInputs(mainConfInput, "Please Select at least One Activity", true);
 }
 
@@ -386,13 +388,37 @@ const isValidEmail = () => {
 
 const isValidCreditCardNumber = () => {
 
-    console.log(creditCardInput.value);
-    console.log(/\d{13,16}/.test(creditCardInput.value));
-    console.log('finished cc');
-    !showOrHideTip(!/^\d{13,16}$/.test(creditCardInput.value), creditCardInput.nextElementSibling);
-    !showOrHideTip(!/^\d{5}$/.test(zipInput.value), zipInput.nextElementSibling);
-    !showOrHideTip(!/^\d{3}$/.test(cvvInput.value), cvvInput.nextElementSibling);
-    return false;
+    // console.log(creditCardInput.value);
+    // console.log(/\d{13,16}/.test(creditCardInput.value));
+    // console.log('finished cc');
+    // !showOrHideTip(!/^\d{13,16}$/.test(creditCardInput.value), creditCardInput.nextElementSibling);
+    // !showOrHideTip(!/^\d{5}$/.test(zipInput.value), zipInput.nextElementSibling);
+    // !showOrHideTip(!/^\d{3}$/.test(cvvInput.value), cvvInput.nextElementSibling);
+    return !showOrHideTip(!/^\d{13,16}$/.test(creditCardInput.value), creditCardInput.nextElementSibling);;
+    // return !showOrHideTip(!/\d{13,16}/.test(creditCardInput.value), creditCardInput.nextElementSibling);
+}
+
+const isValidZip = () => {
+
+    // console.log(creditCardInput.value);
+    // console.log(/\d{13,16}/.test(creditCardInput.value));
+    // console.log('finished cc');
+    // !showOrHideTip(!/^\d{13,16}$/.test(creditCardInput.value), creditCardInput.nextElementSibling);
+    // !showOrHideTip(!/^\d{5}$/.test(zipInput.value), zipInput.nextElementSibling);
+    // !showOrHideTip(!/^\d{3}$/.test(cvvInput.value), cvvInput.nextElementSibling);
+    return !showOrHideTip(!/^\d{5}$/.test(zipInput.value), zipInput.nextElementSibling);
+    // return !showOrHideTip(!/\d{13,16}/.test(creditCardInput.value), creditCardInput.nextElementSibling);
+}
+
+const isValidCVV = () => {
+
+    // console.log(creditCardInput.value);
+    // console.log(/\d{13,16}/.test(creditCardInput.value));
+    // console.log('finished cc');
+    // !showOrHideTip(!/^\d{13,16}$/.test(creditCardInput.value), creditCardInput.nextElementSibling);
+    // !showOrHideTip(!/^\d{5}$/.test(zipInput.value), zipInput.nextElementSibling);
+    // !showOrHideTip(!/^\d{3}$/.test(cvvInput.value), cvvInput.nextElementSibling);
+    return !showOrHideTip(!/^\d{3}$/.test(cvvInput.value), cvvInput.nextElementSibling);
     // return !showOrHideTip(!/\d{13,16}/.test(creditCardInput.value), creditCardInput.nextElementSibling);
 }
 
@@ -413,16 +439,23 @@ const validateAll = (event) => {
     // console.log(paymentSelect.options[paymentSelect.selectedIndex].value);
     if (paymentSelect.options[paymentSelect.selectedIndex].value === 'credit card') {
         //do credit card testing here
-        console.log('ready for cc test');
+        // console.log('ready for cc test');
+
+        allPassed = isValidZip();
+        allPassed = isValidCVV();
         allPassed = isValidCreditCardNumber();
     }
     console.log(allPassed);
     //if all passed submit if not preventDefault();
 }
 
-// usernameInput.addEventListener("input", createRealTimeListener(isValidUsername));
+usernameInput.addEventListener("input", usernameHasValue);
 
 emailInput.addEventListener("input", isValidEmail);
+
+creditCardInput.addEventListener("input", isValidCreditCardNumber);
+zipInput.addEventListener("input", isValidZip);
+cvvInput.addEventListener("input", isValidCVV);
 
 // emailInput.addEventListener("input", createListener(isValidPassword));
 
@@ -448,12 +481,23 @@ const showOrHideTip = (show, element) => {
     if (show) {
         // console.log(element);
         element.style.display = "inherit";
+        if (inputOfSpan.id === 'cc-num') {
+            element.id = 'cc-error';
+            // console.log(element);
+            console.log(element.id + " cc");
+        } else {
+            element.id = 'error';
+            console.log(element.id + " noncc");
+        }
         inputOfSpan.className = 'error';
         // paragraph.className = 'error';
         // console.log(element);
     } else {
         element.style.display = "none";
         inputOfSpan.className = '';
+        // if (inputOfSpan.id === 'cc-num') {
+        element.id === '';
+        // }
         // paragraph.className = '';
     }
 
@@ -463,33 +507,33 @@ const showOrHideTip = (show, element) => {
     // console.log(element.style.display);
 }
 
-function showOrHideTipOriginal(show, element) {
-    // show element when show is true, hide when false
-    // console.log(show + " show");
-    // paragraph = element.parentElement;
-    // console.log('showOrHideTip');
-    // console.log(show);
-    // console.log(element);
+// function showOrHideTipOriginal(show, element) {
+//     // show element when show is true, hide when false
+//     // console.log(show + " show");
+//     // paragraph = element.parentElement;
+//     // console.log('showOrHideTip');
+//     // console.log(show);
+//     // console.log(element);
 
-    inputOfSpan = element.previousElementSibling;
-    // console.log(inputOfSpan);
-    // console.log(paragraph);
-    // console.log(element.style.display);
-    if (show) {
-        // console.log(element);
-        element.style.display = "inherit";
-        inputOfSpan.className = 'error';
-        // paragraph.className = 'error';
-        // console.log(element);
-    } else {
-        element.style.display = "none";
-        inputOfSpan.className = '';
-        // paragraph.className = '';
-    }
-    // console.log(element.previousElementSibling);
-    // console.log(element);
-    // console.log(element.style.display);
-}
+//     inputOfSpan = element.previousElementSibling;
+//     // console.log(inputOfSpan);
+//     // console.log(paragraph);
+//     // console.log(element.style.display);
+//     if (show) {
+//         // console.log(element);
+//         element.style.display = "inherit";
+//         inputOfSpan.className = 'error';
+//         // paragraph.className = 'error';
+//         // console.log(element);
+//     } else {
+//         element.style.display = "none";
+//         inputOfSpan.className = '';
+//         // paragraph.className = '';
+//     }
+//     // console.log(element.previousElementSibling);
+//     // console.log(element);
+//     // console.log(element.style.display);
+// }
 
 // original code from the Treehouse course Regular Expressions in JavaScript by Joel Kraft
 // function createRealTimeListener(validator) {
