@@ -366,7 +366,7 @@ const setupFormValidation = () => {
  * Validate User Name input element - Display or Hide error message
  * 1) check for empty value
  * 2) call showOrHideTip
- * 3) return true if passed / false if failed
+ * @returns {boolean} - true if passed / false if failed
  ***/
 const usernameHasValue = () => !showOrHideTip(!usernameInput.value.trim().length > 0, usernameInput.nextElementSibling);
 
@@ -379,7 +379,7 @@ const usernameHasValue = () => !showOrHideTip(!usernameInput.value.trim().length
  * 2) if not empty check for invalid email format
  *      a) if empty: set span message to invalid format message
  * 3) call showOrHideTip
- * 3) return true if passed / false if failed
+ * @returns {boolean} - true if passed / false if failed
  ***/
 const isValidEmail = () => {
 
@@ -401,8 +401,7 @@ const isValidEmail = () => {
  * Validate Activities input checkbox elements - Display or Hide error message
  * 1) check for 1 or more checked
  * 2) call showOrHideTip
- * 3) return true if passed / false if failed
- ***/
+ * @returns {boolean} - true if passed / false if failed
 const oneOrMoreActivies = () => !showOrHideTip(!(activityFieldset.querySelectorAll('input[type="checkbox"]:checked').length > 0), mainConfInput.nextElementSibling);
 
 /***
@@ -410,7 +409,7 @@ const oneOrMoreActivies = () => !showOrHideTip(!(activityFieldset.querySelectorA
  * Validate Credit Card Number input element - Display or Hide error message
  * 1) check for Valid Credit Card # (14-16 digits)
  * 2) call showOrHideTip
- * 3) return true if passed / false if failed
+ * @returns {boolean} - true if passed / false if failed
  ***/
 const isValidCreditCardNumber = () => !showOrHideTip(!/^\d{13,16}$/.test(creditCardInput.value), creditCardInput.nextElementSibling);
 
@@ -419,7 +418,7 @@ const isValidCreditCardNumber = () => !showOrHideTip(!/^\d{13,16}$/.test(creditC
  * Validate Zip input element - Display or Hide error message
  * 1) check for Valid Zip # (5 digits)
  * 2) call showOrHideTip
- * 3) return true if passed / false if failed
+ * @returns {boolean} - true if passed / false if failed
  ***/
 const isValidZip = () => !showOrHideTip(!/^\d{5}$/.test(zipInput.value), zipInput.nextElementSibling);
 
@@ -428,7 +427,7 @@ const isValidZip = () => !showOrHideTip(!/^\d{5}$/.test(zipInput.value), zipInpu
  * Validate CVV input element - Display or Hide error message
  * 1) check for Valid CVV # (3 digits)
  * 2) call showOrHideTip
- * 3) return true if passed / false if failed
+ * @returns {boolean} - true if passed / false if failed
  ***/
 const isValidCVV = () => !showOrHideTip(!/^\d{3}$/.test(cvvInput.value), cvvInput.nextElementSibling);
 
@@ -492,6 +491,7 @@ const validateAll = (event) => {
  *      c) set input class to empty
  * @param {boolean} show - show/hide error message and input error styling
  * @param {element} span - span of the input that has the error
+ * @returns {boolean} - show = t / hide = f
  ***/
 const showOrHideTip = (show, span) => {
 
